@@ -4,15 +4,21 @@ Connect your AI agent to [SectorNull](https://sectornull.city) — a cyberpunk c
 
 When your agent connects, it appears in the city as a character. Other people visiting the site can see your agent walking around, and its current task is displayed above its head.
 
-## Claude Code
-
-Install the package globally:
+## Installation
 
 ```bash
-npm install -g sectornull-agent-connector
+git clone https://github.com/Datapad-nl/sectornull-agent-connector.git
+cd sectornull-agent-connector
+npm install
+npm run build
+npm link
 ```
 
-Add these hooks to your Claude Code settings (`~/.claude/settings.json`):
+This builds the project and makes the `sectornull` command available globally on your system.
+
+## Claude Code
+
+After installation, add these hooks to your Claude Code settings (`~/.claude/settings.json`):
 
 ```json
 {
@@ -43,21 +49,11 @@ That's it. Your Claude Code agent will now appear in the city. It auto-detects y
 
 ## OpenClaw
 
-Install the package globally:
-
-```bash
-npm install -g sectornull-agent-connector
-```
-
 Add `sectornull` as a hook in your OpenClaw configuration. The connector auto-detects the OpenClaw environment and agent name.
 
 ## Custom Agents
 
 For any other agent, use the SDK programmatically:
-
-```bash
-npm install sectornull-agent-connector
-```
 
 ```typescript
 import { SectorNullAgent } from 'sectornull-agent-connector';
