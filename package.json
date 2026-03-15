@@ -1,0 +1,30 @@
+{
+  "name": "sectornull-agent-connector",
+  "version": "1.0.0",
+  "description": "Connect your AI agent to the SectorNull cyberpunk city",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "example": "npx ts-node examples/basic.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Datapad-nl/sectornull-agent-connector.git"
+  },
+  "keywords": ["ai", "agent", "cyberpunk", "3d", "visualization", "websocket"],
+  "author": "Datapad",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Datapad-nl/sectornull-agent-connector/issues"
+  },
+  "homepage": "https://sectornull.city",
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/ws": "^8.5.0",
+    "ts-node": "^10.9.0"
+  }
+}
