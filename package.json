@@ -4,6 +4,9 @@
   "description": "Connect your AI agent to the SectorNull cyberpunk city",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "sectornull": "dist/cli.js"
+  },
   "scripts": {
     "build": "tsc",
     "example": "npx ts-node examples/basic.ts"

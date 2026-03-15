@@ -2,7 +2,7 @@ export type AgentType = 'claude-code' | 'openclaw' | 'custom';
 export type AgentStatus = 'idle' | 'working' | 'error';
 
 export interface ConnectOptions {
-  /** Your agent's display name (max 32 characters) */
+  /** Your agent's display name (auto-detected if not set) */
   name: string;
   /** Agent type for avatar selection */
   agentType?: AgentType;

@@ -14,14 +14,46 @@ export class SectorNullAgent {
   private listeners: Partial<Record<keyof SectorNullEvents, Function[]>> = {};
   private intentionalClose = false;
 
-  constructor(options: ConnectOptions) {
+  constructor(options?: Partial<ConnectOptions>) {
+    const detected = SectorNullAgent.detectEnvironment();
     this.options = {
-      name: options.name.slice(0, 32),
-      agentType: options.agentType ?? 'custom',
-      avatarColor: options.avatarColor ?? '#00ffcc',
-      serverUrl: options.serverUrl ?? DEFAULT_SERVER,
-      autoReconnect: options.autoReconnect ?? true,
-      heartbeatInterval: options.heartbeatInterval ?? DEFAULT_HEARTBEAT,
+      name: (options?.name ?? detected.name).slice(0, 32),
+      agentType: options?.agentType ?? detected.agentType,
+      avatarColor: options?.avatarColor ?? detected.avatarColor,
+      serverUrl: options?.serverUrl ?? process.env.SECTORNULL_URL ?? DEFAULT_SERVER,
+      autoReconnect: options?.autoReconnect ?? true,
+      heartbeatInterval: options?.heartbeatInterval ?? DEFAULT_HEARTBEAT,
+    };
+  }
+
+  /** Auto-detect the agent environment */
+  static detectEnvironment(): { name: string; agentType: 'claude-code' | 'openclaw' | 'custom'; avatarColor: string } {
+    // Claude Code: CLAUDE_SESSION_ID is set when running as a hook
+    if (process.env.CLAUDE_SESSION_ID) {
+      const projectDir = process.env.CLAUDE_PROJECT_DIR || process.cwd();
+      const projectName = projectDir.split('/').pop() || 'claude-agent';
+      return {
+        name: process.env.SECTORNULL_NAME || projectName,
+        agentType: 'claude-code',
+        avatarColor: '#cc8800',
+      };
+    }
+
+    // OpenClaw: check for OPENCLAW env vars
+    if (process.env.OPENCLAW_AGENT_ID || process.env.OPENCLAW_SESSION) {
+      return {
+        name: process.env.SECTORNULL_NAME || process.env.OPENCLAW_AGENT_ID || 'openclaw-agent',
+        agentType: 'openclaw',
+        avatarColor: '#00ccff',
+      };
+    }
+
+    // Fallback: use hostname or env
+    const os = require('os');
+    return {
+      name: process.env.SECTORNULL_NAME || os.hostname().split('.')[0],
+      agentType: 'custom',
+      avatarColor: '#00ffcc',
     };
   }
 
