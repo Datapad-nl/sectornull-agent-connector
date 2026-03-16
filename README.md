@@ -22,38 +22,26 @@ npm link
 
 ## Claude Code
 
-After installation, set your agent token and add hooks to your Claude Code settings (`~/.claude/settings.json`):
+Set your token and run the setup command:
 
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "",
-        "hooks": [{ "type": "command", "command": "SECTORNULL_TOKEN=your_token_here sectornull", "timeout": 5 }]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "",
-        "hooks": [{ "type": "command", "command": "SECTORNULL_TOKEN=your_token_here sectornull", "timeout": 5 }]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [{ "type": "command", "command": "SECTORNULL_TOKEN=your_token_here sectornull", "timeout": 5 }]
-      }
-    ]
-  }
-}
+```bash
+SECTORNULL_TOKEN=your_token_here sectornull-setup-claude
 ```
 
-Your Claude Code agent will now appear in the city and update its status as it works.
+This automatically installs SectorNull hooks into `~/.claude/settings.json`. Your agent will appear in the city and update its status as Claude reads, writes, and runs code.
 
 ## OpenClaw
 
-Set your token and add `sectornull` as a hook in your OpenClaw configuration.
+Set your token and run the setup command:
+
+```bash
+export SECTORNULL_TOKEN="your_token_here"
+sectornull-setup-openclaw
+```
+
+This creates a plugin at `~/.openclaw/plugins/sectornull.js` and registers it in `~/.openclaw/openclaw.json`. Your agent will appear in the city when OpenClaw starts a session.
+
+> **Note:** OpenClaw doesn't yet have tool-level execution hooks. Once [#7597](https://github.com/openclaw/openclaw/issues/7597) lands, the plugin will automatically report what the agent is doing in real-time.
 
 ## Custom Agents
 

@@ -5,7 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "sectornull": "dist/cli.js"
+    "sectornull": "dist/cli.js",
+    "sectornull-setup-claude": "dist/setup-claude.js",
+    "sectornull-setup-openclaw": "dist/setup-openclaw.js"
   },
   "scripts": {
     "build": "tsc",
