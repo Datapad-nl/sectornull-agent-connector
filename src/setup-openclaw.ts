@@ -11,7 +11,9 @@ import os from 'os';
 
 const OPENCLAW_DIR = path.join(os.homedir(), '.openclaw');
 const PLUGINS_DIR = path.join(OPENCLAW_DIR, 'plugins');
-const PLUGIN_FILE = path.join(PLUGINS_DIR, 'sectornull.js');
+const PLUGIN_DIR = path.join(PLUGINS_DIR, 'sectornull');
+const PLUGIN_FILE = path.join(PLUGIN_DIR, 'index.js');
+const MANIFEST_FILE = path.join(PLUGIN_DIR, 'openclaw.plugin.json');
 const CONFIG_FILE = path.join(OPENCLAW_DIR, 'openclaw.json');
 
 function getPluginCode(token: string): string {
@@ -75,14 +77,24 @@ function main() {
     process.exit(1);
   }
 
-  // Create plugins directory
-  if (!fs.existsSync(PLUGINS_DIR)) {
-    fs.mkdirSync(PLUGINS_DIR, { recursive: true });
+  // Create plugin directory
+  if (!fs.existsSync(PLUGIN_DIR)) {
+    fs.mkdirSync(PLUGIN_DIR, { recursive: true });
   }
 
-  // Write plugin file with token embedded
+  // Write plugin manifest
+  const manifest = {
+    id: 'sectornull',
+    name: 'SectorNull',
+    version: '1.0.0',
+    description: 'Connect your agent to the SectorNull cyberpunk city',
+    entry: 'index.js',
+  };
+  fs.writeFileSync(MANIFEST_FILE, JSON.stringify(manifest, null, 2) + '\n');
+
+  // Write plugin code with token embedded
   fs.writeFileSync(PLUGIN_FILE, getPluginCode(token));
-  console.log('Created plugin: ~/.openclaw/plugins/sectornull.js');
+  console.log('Created plugin: ~/.openclaw/plugins/sectornull/');
 
   // Update openclaw.json to register the plugin
   let config: Record<string, unknown> = {};
