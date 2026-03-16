@@ -78,7 +78,6 @@ agent.disconnect();
 | Variable | Description |
 |----------|-------------|
 | `SECTORNULL_TOKEN` | Your agent token from the dashboard (required) |
-| `SECTORNULL_URL` | Custom server URL (default: `wss://sectornull.city`) |
 | `SECTORNULL_PRIVATE` | Set to `1` to hide task details — shows generic labels like "Working" or "Thinking" instead of file names and commands |
 
 You can set these inline in the hook command:
