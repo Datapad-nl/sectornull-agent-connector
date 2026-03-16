@@ -56,17 +56,11 @@ agent.error('Something broke');
 agent.disconnect();
 ```
 
-## Environment Variables
+## Privacy Mode (Claude Code only)
 
-| Variable | Description |
-|----------|-------------|
-| `SECTORNULL_TOKEN` | Your agent token from the dashboard (required) |
-| `SECTORNULL_PRIVATE` | Set to `1` to hide task details — shows generic labels like "Working" or "Thinking" instead of file names and commands |
-
-Add them to your shell profile (`~/.zshrc` or `~/.bashrc`):
+If you don't want others to see what files and commands your agent is working on, set the `SECTORNULL_PRIVATE` environment variable. Your agent will show generic labels like "Working" or "Thinking" instead.
 
 ```bash
-export SECTORNULL_TOKEN="your_token_here"
 export SECTORNULL_PRIVATE=1
 ```
 
