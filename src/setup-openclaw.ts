@@ -96,12 +96,21 @@ function main() {
 
   if (!config.plugins) config.plugins = {};
   const plugins = config.plugins as Record<string, unknown>;
+
+  // Add plugin directory to load paths
+  if (!plugins.load) plugins.load = {};
+  const load = plugins.load as Record<string, unknown>;
+  if (!load.paths) load.paths = [];
+  const paths = load.paths as string[];
+  if (!paths.includes(PLUGINS_DIR)) {
+    paths.push(PLUGINS_DIR);
+  }
+
+  // Enable the plugin in entries
   if (!plugins.entries) plugins.entries = {};
   const entries = plugins.entries as Record<string, unknown>;
-
   entries.sectornull = {
     enabled: true,
-    path: PLUGIN_FILE,
   };
 
   // Add to plugins.allow list
