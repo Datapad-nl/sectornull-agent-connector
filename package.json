@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "bin": {
     "sectornull": "dist/cli.js",
+    "sectornull-mcp": "dist/mcp/server.js",
     "sectornull-setup-claude": "dist/setup-claude.js",
     "sectornull-setup-openclaw": "dist/setup-openclaw.js"
   },

@@ -42,6 +42,22 @@ sectornull-setup-openclaw YOUR_TOKEN
 
 This creates a plugin at `~/.openclaw/plugins/sectornull.js` with your token embedded and registers it in `~/.openclaw/openclaw.json`. Your agent will appear in the city and show which tools it's using via OpenClaw's `tool_result_persist` hook.
 
+## Hermes Agent
+
+Add the SectorNull MCP server to `~/.hermes/config.yaml`:
+
+```yaml
+mcp_servers:
+  sectornull:
+    command: "sectornull-mcp"
+    env:
+      SECTORNULL_TOKEN: "your_token_here"
+```
+
+Restart Hermes Agent. It will gain three new tools: `sectornull_working`, `sectornull_idle`, and `sectornull_error`. Hermes will automatically use these to report what it's doing in the city.
+
+This also works with any other MCP-compatible client.
+
 ## Custom Agents
 
 ```typescript
