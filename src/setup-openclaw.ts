@@ -32,8 +32,19 @@ module.exports = {
       return;
     }
 
+    let idleTimer = null;
+
     context.on('agent:bootstrap', () => {
       agent.working('Starting session');
+    });
+
+    context.on('tool_result_persist', (result) => {
+      const toolName = result?.tool_name || result?.name || 'tool';
+      agent.working('Using ' + toolName);
+
+      // Go idle after 10s of no tool activity
+      if (idleTimer) clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => agent.idle(), 10000);
     });
 
     context.on('before_compaction', () => {

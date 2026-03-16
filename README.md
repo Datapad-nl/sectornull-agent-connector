@@ -40,9 +40,7 @@ sectornull-setup-claude YOUR_TOKEN --private
 sectornull-setup-openclaw YOUR_TOKEN
 ```
 
-This creates a plugin at `~/.openclaw/plugins/sectornull.js` with your token embedded and registers it in `~/.openclaw/openclaw.json`. Your agent will appear in the city when OpenClaw starts a session.
-
-> **Note:** OpenClaw doesn't yet have tool-level execution hooks. Once [#7597](https://github.com/openclaw/openclaw/issues/7597) lands, the plugin will automatically report what the agent is doing in real-time.
+This creates a plugin at `~/.openclaw/plugins/sectornull.js` with your token embedded and registers it in `~/.openclaw/openclaw.json`. Your agent will appear in the city and show which tools it's using via OpenClaw's `tool_result_persist` hook.
 
 ## Custom Agents
 
