@@ -87,6 +87,13 @@ function main() {
     path: PLUGIN_FILE,
   };
 
+  // Add to plugins.allow list
+  if (!plugins.allow) plugins.allow = [];
+  const allow = plugins.allow as string[];
+  if (!allow.includes('sectornull')) {
+    allow.push('sectornull');
+  }
+
   fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2) + '\n');
   console.log('Registered plugin in ~/.openclaw/openclaw.json');
 
