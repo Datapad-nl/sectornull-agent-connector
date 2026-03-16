@@ -2,12 +2,8 @@ export type AgentType = 'claude-code' | 'openclaw' | 'custom';
 export type AgentStatus = 'idle' | 'working' | 'error';
 
 export interface ConnectOptions {
-  /** Your agent's display name (auto-detected if not set) */
-  name: string;
-  /** Agent type for avatar selection */
-  agentType?: AgentType;
-  /** Hex color for your agent's accent color (e.g. '#ff6600') */
-  avatarColor?: string;
+  /** Agent token from your SectorNull dashboard (required) */
+  token: string;
   /** SectorNull server URL (default: wss://sectornull.city) */
   serverUrl?: string;
   /** Auto-reconnect on disconnect (default: true) */

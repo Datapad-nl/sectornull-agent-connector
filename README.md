@@ -4,6 +4,12 @@ Connect your AI agent to [SectorNull](https://sectornull.city) — a cyberpunk c
 
 When your agent connects, it appears in the city as a character. Other people visiting the site can see your agent walking around, and its current task is displayed above its head.
 
+## Getting Started
+
+1. **Register** at [sectornull.city](https://sectornull.city) (email or Google/GitHub)
+2. **Create an agent** in your dashboard — give it a name and pick a type
+3. **Copy the token** — you'll use this to connect your agent
+
 ## Installation
 
 ```bash
@@ -14,11 +20,9 @@ npm run build
 npm link
 ```
 
-This builds the project and makes the `sectornull` command available globally on your system.
-
 ## Claude Code
 
-After installation, add these hooks to your Claude Code settings (`~/.claude/settings.json`):
+After installation, set your agent token and add hooks to your Claude Code settings (`~/.claude/settings.json`):
 
 ```json
 {
@@ -26,40 +30,40 @@ After installation, add these hooks to your Claude Code settings (`~/.claude/set
     "PreToolUse": [
       {
         "matcher": "",
-        "hooks": [{ "type": "command", "command": "sectornull", "timeout": 5 }]
+        "hooks": [{ "type": "command", "command": "SECTORNULL_TOKEN=your_token_here sectornull", "timeout": 5 }]
       }
     ],
     "PostToolUse": [
       {
         "matcher": "",
-        "hooks": [{ "type": "command", "command": "sectornull", "timeout": 5 }]
+        "hooks": [{ "type": "command", "command": "SECTORNULL_TOKEN=your_token_here sectornull", "timeout": 5 }]
       }
     ],
     "Stop": [
       {
         "matcher": "",
-        "hooks": [{ "type": "command", "command": "sectornull", "timeout": 5 }]
+        "hooks": [{ "type": "command", "command": "SECTORNULL_TOKEN=your_token_here sectornull", "timeout": 5 }]
       }
     ]
   }
 }
 ```
 
-That's it. Your Claude Code agent will now appear in the city. It auto-detects your project name and updates its status as Claude works — reading files, running commands, editing code.
+Your Claude Code agent will now appear in the city and update its status as it works.
 
 ## OpenClaw
 
-Add `sectornull` as a hook in your OpenClaw configuration. The connector auto-detects the OpenClaw environment and agent name.
+Set your token and add `sectornull` as a hook in your OpenClaw configuration.
 
 ## Custom Agents
-
-For any other agent, use the SDK programmatically:
 
 ```typescript
 import { SectorNullAgent } from 'sectornull-agent-connector';
 
-// Auto-detects name from hostname, or set SECTORNULL_NAME env var
-const agent = new SectorNullAgent();
+const agent = new SectorNullAgent({
+  token: 'your_token_here',
+});
+
 await agent.connect();
 
 agent.working('Processing data', 50);
@@ -73,20 +77,20 @@ agent.disconnect();
 
 | Variable | Description |
 |----------|-------------|
-| `SECTORNULL_NAME` | Override the auto-detected agent name |
+| `SECTORNULL_TOKEN` | Your agent token from the dashboard (required) |
 | `SECTORNULL_URL` | Custom server URL (default: `wss://sectornull.city`) |
 | `SECTORNULL_PRIVATE` | Set to `1` to hide task details — shows generic labels like "Working" or "Thinking" instead of file names and commands |
 
 You can set these inline in the hook command:
 
 ```json
-"hooks": [{ "type": "command", "command": "SECTORNULL_NAME=my-agent SECTORNULL_PRIVATE=1 sectornull", "timeout": 5 }]
+"hooks": [{ "type": "command", "command": "SECTORNULL_TOKEN=abc123 SECTORNULL_PRIVATE=1 sectornull", "timeout": 5 }]
 ```
 
 Or add them to your shell profile (`~/.zshrc` or `~/.bashrc`):
 
 ```bash
-export SECTORNULL_NAME="my-agent"
+export SECTORNULL_TOKEN="your_token_here"
 export SECTORNULL_PRIVATE=1
 ```
 

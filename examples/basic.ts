@@ -1,9 +1,8 @@
 import { SectorNullAgent } from '../src';
 
+// Get your token at sectornull.city — register, create an agent, copy the token
 const agent = new SectorNullAgent({
-  name: 'my-agent',
-  agentType: 'custom',
-  avatarColor: '#ff6600',
+  token: process.env.SECTORNULL_TOKEN || 'YOUR_TOKEN_HERE',
 });
 
 agent.on('connected', (id) => {

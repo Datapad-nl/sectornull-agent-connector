@@ -74,7 +74,13 @@ async function main() {
   const event = String(input.hook_event_name || '');
   if (!event) process.exit(0);
 
-  const agent = new SectorNullAgent();
+  const token = process.env.SECTORNULL_TOKEN;
+  if (!token) {
+    console.error('[SectorNull] SECTORNULL_TOKEN not set. Get your token at sectornull.city/dashboard');
+    process.exit(0);
+  }
+
+  const agent = new SectorNullAgent({ token });
 
   try {
     await Promise.race([
