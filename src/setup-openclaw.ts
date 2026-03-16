@@ -89,11 +89,23 @@ function main() {
     version: '1.0.0',
     description: 'Connect your agent to the SectorNull cyberpunk city',
     entry: 'index.js',
+    configSchema: {
+      type: 'object',
+      properties: {},
+      additionalProperties: false,
+    },
   };
   fs.writeFileSync(MANIFEST_FILE, JSON.stringify(manifest, null, 2) + '\n');
 
   // Write plugin code with token embedded
   fs.writeFileSync(PLUGIN_FILE, getPluginCode(token));
+
+  // Clean up old flat plugin file from previous SDK versions
+  const oldPluginFile = path.join(PLUGINS_DIR, 'sectornull.js');
+  if (fs.existsSync(oldPluginFile)) {
+    fs.unlinkSync(oldPluginFile);
+  }
+
   console.log('Created plugin: ~/.openclaw/plugins/sectornull/');
 
   // Update openclaw.json to register the plugin
