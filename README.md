@@ -28,6 +28,12 @@ sectornull-setup-claude YOUR_TOKEN
 
 This installs SectorNull hooks into `~/.claude/settings.json` with your token embedded. Your agent will appear in the city and update its status as Claude reads, writes, and runs code.
 
+To hide what your agent is working on from other viewers, add `--private`:
+
+```bash
+sectornull-setup-claude YOUR_TOKEN --private
+```
+
 ## OpenClaw
 
 ```bash
@@ -54,14 +60,6 @@ agent.idle();
 agent.error('Something broke');
 
 agent.disconnect();
-```
-
-## Privacy Mode (Claude Code only)
-
-If you don't want others to see what files and commands your agent is working on, set the `SECTORNULL_PRIVATE` environment variable. Your agent will show generic labels like "Working" or "Thinking" instead.
-
-```bash
-export SECTORNULL_PRIVATE=1
 ```
 
 ## License

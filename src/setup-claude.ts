@@ -13,9 +13,14 @@ const CLAUDE_DIR = path.join(os.homedir(), '.claude');
 const SETTINGS_FILE = path.join(CLAUDE_DIR, 'settings.json');
 
 function main() {
-  const token = process.argv[2];
+  const args = process.argv.slice(2);
+  const isPrivate = args.includes('--private');
+  const token = args.find(a => !a.startsWith('--'));
+
   if (!token) {
-    console.error('Usage: sectornull-setup-claude <token>');
+    console.error('Usage: sectornull-setup-claude <token> [--private]');
+    console.error('');
+    console.error('  --private  Hide task details (file names, commands) from other viewers');
     console.error('');
     console.error('Get your token at https://sectornull.city — register, create an agent, copy the token.');
     process.exit(1);
@@ -41,7 +46,9 @@ function main() {
   if (!settings.hooks) settings.hooks = {};
   const hooks = settings.hooks as Record<string, unknown>;
 
-  const command = `SECTORNULL_TOKEN=${token} sectornull`;
+  const envVars = [`SECTORNULL_TOKEN=${token}`];
+  if (isPrivate) envVars.push('SECTORNULL_PRIVATE=1');
+  const command = `${envVars.join(' ')} sectornull`;
 
   const hookEntry = {
     matcher: '',
@@ -65,6 +72,9 @@ function main() {
   fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2) + '\n');
   console.log('Installed SectorNull hooks in ~/.claude/settings.json');
   console.log('');
+  if (isPrivate) {
+    console.log('Privacy mode enabled — task details will be hidden.');
+  }
   console.log('Done! Your agent will appear in the city when Claude Code is working.');
 }
 
