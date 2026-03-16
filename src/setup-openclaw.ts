@@ -2,7 +2,7 @@
 
 /**
  * Auto-install SectorNull plugin into OpenClaw.
- * Usage: sectornull-setup-openclaw
+ * Usage: sectornull-setup-openclaw <token>
  */
 
 import fs from 'fs';
@@ -14,16 +14,13 @@ const PLUGINS_DIR = path.join(OPENCLAW_DIR, 'plugins');
 const PLUGIN_FILE = path.join(PLUGINS_DIR, 'sectornull.js');
 const CONFIG_FILE = path.join(OPENCLAW_DIR, 'openclaw.json');
 
-const PLUGIN_CODE = `const { SectorNullAgent } = require('sectornull-agent-connector');
+function getPluginCode(token: string): string {
+  return `const { SectorNullAgent } = require('sectornull-agent-connector');
 
 module.exports = {
   name: 'sectornull',
   async activate(context) {
-    const token = process.env.SECTORNULL_TOKEN;
-    if (!token) {
-      console.log('[SectorNull] SECTORNULL_TOKEN not set — skipping');
-      return;
-    }
+    const token = '${token}';
 
     const agent = new SectorNullAgent({ token });
 
@@ -49,8 +46,17 @@ module.exports = {
   }
 };
 `;
+}
 
 function main() {
+  const token = process.argv[2];
+  if (!token) {
+    console.error('Usage: sectornull-setup-openclaw <token>');
+    console.error('');
+    console.error('Get your token at https://sectornull.city — register, create an agent, copy the token.');
+    process.exit(1);
+  }
+
   // Check if OpenClaw is installed
   if (!fs.existsSync(OPENCLAW_DIR)) {
     console.error('OpenClaw not found at ~/.openclaw');
@@ -63,8 +69,8 @@ function main() {
     fs.mkdirSync(PLUGINS_DIR, { recursive: true });
   }
 
-  // Write plugin file
-  fs.writeFileSync(PLUGIN_FILE, PLUGIN_CODE);
+  // Write plugin file with token embedded
+  fs.writeFileSync(PLUGIN_FILE, getPluginCode(token));
   console.log('Created plugin: ~/.openclaw/plugins/sectornull.js');
 
   // Update openclaw.json to register the plugin
@@ -98,10 +104,7 @@ function main() {
   console.log('Registered plugin in ~/.openclaw/openclaw.json');
 
   console.log('');
-  console.log('Done! Set your token to activate:');
-  console.log('  export SECTORNULL_TOKEN="your_token_here"');
-  console.log('');
-  console.log('Get your token at https://sectornull.city — register, create an agent, copy the token.');
+  console.log('Done! Your agent will appear in the city when OpenClaw starts.');
 }
 
 main();

@@ -22,24 +22,19 @@ npm link
 
 ## Claude Code
 
-Set your token and run the setup command:
-
 ```bash
-SECTORNULL_TOKEN=your_token_here sectornull-setup-claude
+sectornull-setup-claude YOUR_TOKEN
 ```
 
-This automatically installs SectorNull hooks into `~/.claude/settings.json`. Your agent will appear in the city and update its status as Claude reads, writes, and runs code.
+This installs SectorNull hooks into `~/.claude/settings.json` with your token embedded. Your agent will appear in the city and update its status as Claude reads, writes, and runs code.
 
 ## OpenClaw
 
-Set your token and run the setup command:
-
 ```bash
-export SECTORNULL_TOKEN="your_token_here"
-sectornull-setup-openclaw
+sectornull-setup-openclaw YOUR_TOKEN
 ```
 
-This creates a plugin at `~/.openclaw/plugins/sectornull.js` and registers it in `~/.openclaw/openclaw.json`. Your agent will appear in the city when OpenClaw starts a session.
+This creates a plugin at `~/.openclaw/plugins/sectornull.js` with your token embedded and registers it in `~/.openclaw/openclaw.json`. Your agent will appear in the city when OpenClaw starts a session.
 
 > **Note:** OpenClaw doesn't yet have tool-level execution hooks. Once [#7597](https://github.com/openclaw/openclaw/issues/7597) lands, the plugin will automatically report what the agent is doing in real-time.
 

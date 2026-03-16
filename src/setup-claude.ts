@@ -2,7 +2,7 @@
 
 /**
  * Auto-install SectorNull hooks into Claude Code settings.
- * Usage: sectornull-setup-claude
+ * Usage: sectornull-setup-claude <token>
  */
 
 import fs from 'fs';
@@ -13,7 +13,13 @@ const CLAUDE_DIR = path.join(os.homedir(), '.claude');
 const SETTINGS_FILE = path.join(CLAUDE_DIR, 'settings.json');
 
 function main() {
-  const token = process.env.SECTORNULL_TOKEN;
+  const token = process.argv[2];
+  if (!token) {
+    console.error('Usage: sectornull-setup-claude <token>');
+    console.error('');
+    console.error('Get your token at https://sectornull.city — register, create an agent, copy the token.');
+    process.exit(1);
+  }
 
   if (!fs.existsSync(CLAUDE_DIR)) {
     console.error('Claude Code not found at ~/.claude');
@@ -35,10 +41,7 @@ function main() {
   if (!settings.hooks) settings.hooks = {};
   const hooks = settings.hooks as Record<string, unknown>;
 
-  // Update the command to include the token if provided
-  const command = token
-    ? `SECTORNULL_TOKEN=${token} sectornull`
-    : 'sectornull';
+  const command = `SECTORNULL_TOKEN=${token} sectornull`;
 
   const hookEntry = {
     matcher: '',
@@ -49,33 +52,20 @@ function main() {
     if (!hooks[event]) hooks[event] = [];
     const eventHooks = hooks[event] as Array<Record<string, unknown>>;
 
-    // Check if already installed
-    const alreadyInstalled = eventHooks.some(h => {
+    // Remove any existing sectornull hooks (in case of re-setup with new token)
+    const filtered = eventHooks.filter(h => {
       const innerHooks = h.hooks as Array<Record<string, unknown>> | undefined;
-      return innerHooks?.some(ih => String(ih.command || '').includes('sectornull'));
+      return !innerHooks?.some(ih => String(ih.command || '').includes('sectornull'));
     });
 
-    if (!alreadyInstalled) {
-      eventHooks.push(hookEntry);
-    }
+    filtered.push(hookEntry);
+    hooks[event] = filtered;
   }
 
   fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2) + '\n');
   console.log('Installed SectorNull hooks in ~/.claude/settings.json');
-
-  if (!token) {
-    console.log('');
-    console.log('Set your token to activate:');
-    console.log('  export SECTORNULL_TOKEN="your_token_here"');
-    console.log('');
-    console.log('Or re-run with your token set to embed it in the hooks:');
-    console.log('  SECTORNULL_TOKEN=your_token sectornull-setup-claude');
-  } else {
-    console.log('Token embedded in hook commands.');
-  }
-
   console.log('');
-  console.log('Get your token at https://sectornull.city — register, create an agent, copy the token.');
+  console.log('Done! Your agent will appear in the city when Claude Code is working.');
 }
 
 main();
